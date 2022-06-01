@@ -14,6 +14,7 @@ function App() {
         setData(response.data)
         console.log(response.data)
       })
+      setLocation('');
     }
 
 
@@ -21,32 +22,38 @@ function App() {
 
   return (
     <div className="app">
-      <section>
-        <input value={location} onChange={event => setLocation(event.target.value)} placeholder='Enter Location' type='text' aria-label='Enter Location Name' />
+      <section aria-label='Enter Location text box' className='search'>
+        <input
+          value={location}
+          onChange={event => setLocation(event.target.value)}
+          onKeyPress={searchLocation}
+          placeholder='Enter Location'
+          type='text'
+          aria-label='Enter Location Name' />
       </section>
       <div className='container'>
         <section aria-label='Top' className='top'>
           <section className='cityName' aria-label='City Name'>
-            <p>Winnipeg</p>
+            <p>{data.name}</p>
           </section>
           <section className='temperature' aria-label='Temperature'>
-            <h1>30 C</h1>
+            {data.main ? <h1>{data.main.temp}</h1> : null}
           </section>
           <section className='description' aria-label='Weather Description'>
-            <p>Cloudy</p>
+            {data.weather ? <p>{data.weather[0].main}</p> : null}
           </section>
         </section>
         <section aria-label='bottom' className='bottom'>
           <section className='feelLikeTemperature' aria-label='Temperature Feels Like'>
-            <p className='bold'>35 C</p>
+            {data.main ? <p className='bold'>{data.main.feels_like}</p> : null}
             <p className='bottomSectionLabel'>Feels Like</p>
           </section>
           <section className='humidity' aria-label='Humidity'>
-            <p className='bold'>60%</p>
+            {data.main ? <p className='bold'>{data.main.humidity}%</p> : null}
             <p className='bottomSectionLabel'>Humidity</p>
           </section>
           <section className='windSpeed' aria-label='Wind Speed'>
-            <p className='bold'>15 Km/H</p>
+            {data.wind ? <p className='bold'>{data.wind.speed} Km/H</p> : null}
             <p className='bottomSectionLabel'>Wind Speed</p>
           </section>
         </section>
