@@ -6,7 +6,8 @@ function App() {
   const [data, setData] = useState({})
   const [location, setLocation] = useState('')
   const apiKey = '355edf7343cc1ad6243f12d93e29eb39';
-  const url = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&appid=' + apiKey;
+  const temperatureUnit = 'metric';
+  const url = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=' + temperatureUnit + '&appid=' + apiKey;
 
   const searchLocation = (event) => {
     if (event.key === 'Enter') {
@@ -37,26 +38,28 @@ function App() {
             <p>{data.name}</p>
           </section>
           <section className='temperature' aria-label='Temperature'>
-            {data.main ? <h1>{data.main.temp}</h1> : null}
+            {data.main ? <h1>{data.main.temp.toFixed()}°C</h1> : null}
           </section>
           <section className='description' aria-label='Weather Description'>
             {data.weather ? <p>{data.weather[0].main}</p> : null}
           </section>
         </section>
-        <section aria-label='bottom' className='bottom'>
-          <section className='feelLikeTemperature' aria-label='Temperature Feels Like'>
-            {data.main ? <p className='bold'>{data.main.feels_like}</p> : null}
-            <p className='bottomSectionLabel'>Feels Like</p>
+        {data.name != undefined &&
+          <section aria-label='bottom' className='bottom'>
+            <section className='feelLikeTemperature' aria-label='Temperature Feels Like'>
+              {data.main ? <p className='bold'>{data.main.feels_like.toFixed()}°C</p> : null}
+              <p className='bottomSectionLabel'>Feels Like</p>
+            </section>
+            <section className='humidity' aria-label='Humidity'>
+              {data.main ? <p className='bold'>{data.main.humidity}%</p> : null}
+              <p className='bottomSectionLabel'>Humidity</p>
+            </section>
+            <section className='windSpeed' aria-label='Wind Speed'>
+              {data.wind ? <p className='bold'>{data.wind.speed.toFixed()} Km/H</p> : null}
+              <p className='bottomSectionLabel'>Wind Speed</p>
+            </section>
           </section>
-          <section className='humidity' aria-label='Humidity'>
-            {data.main ? <p className='bold'>{data.main.humidity}%</p> : null}
-            <p className='bottomSectionLabel'>Humidity</p>
-          </section>
-          <section className='windSpeed' aria-label='Wind Speed'>
-            {data.wind ? <p className='bold'>{data.wind.speed} Km/H</p> : null}
-            <p className='bottomSectionLabel'>Wind Speed</p>
-          </section>
-        </section>
+        }
       </div>
     </div>
   );
