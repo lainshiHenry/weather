@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import './App.css'
 import axios from 'axios'
+import Humidity from './view/components/humidity'
+import WindSpeed from './view/components/windSpeed'
+import FeelsLike from './view/components/feelsLike'
+import Description from './view/components/description'
+import CityName from './view/components/cityName'
+import Temperature from './view/components/temperature'
 
 function App() {
   const [data, setData] = useState({})
@@ -17,47 +23,30 @@ function App() {
       })
       setLocation('');
     }
-
-
   }
 
   return (
     <div className="app">
-      <section aria-label='Enter Location text box' className='search'>
+      <section aria-label='Enter Location' className='search'>
         <input
           value={location}
           onChange={event => setLocation(event.target.value)}
           onKeyPress={searchLocation}
           placeholder='Enter Location'
           type='text'
-          aria-label='Enter Location Name' />
+        />
       </section>
       <div className='container'>
         <section aria-label='Top' className='top'>
-          <section className='cityName' aria-label='City Name'>
-            <p>{data.name}</p>
-          </section>
-          <section className='temperature' aria-label='Temperature'>
-            {data.main ? <h1>{data.main.temp.toFixed()}°C</h1> : null}
-          </section>
-          <section className='description' aria-label='Weather Description'>
-            {data.weather ? <p>{data.weather[0].main}</p> : null}
-          </section>
+          <CityName cityName={data.name} />
+          {data.name ? <Temperature temperatureValue={data.main.temp} /> : null}
+          {data.weather ? <Description description={data.weather[0].main} /> : null}
         </section>
-        {data.name != undefined &&
+        {data.name !== undefined &&
           <section aria-label='bottom' className='bottom'>
-            <section className='feelLikeTemperature' aria-label='Temperature Feels Like'>
-              {data.main ? <p className='bold'>{data.main.feels_like.toFixed()}°C</p> : null}
-              <p className='bottomSectionLabel'>Feels Like</p>
-            </section>
-            <section className='humidity' aria-label='Humidity'>
-              {data.main ? <p className='bold'>{data.main.humidity}%</p> : null}
-              <p className='bottomSectionLabel'>Humidity</p>
-            </section>
-            <section className='windSpeed' aria-label='Wind Speed'>
-              {data.wind ? <p className='bold'>{data.wind.speed.toFixed()} Km/H</p> : null}
-              <p className='bottomSectionLabel'>Wind Speed</p>
-            </section>
+            {data.main ? <FeelsLike feelsLikeValue={data.main.feels_like} /> : null}
+            {data.main ? <Humidity humidityValue={data.main.humidity} /> : null}
+            {data.wind ? <WindSpeed windSpeedValue={data.wind.speed} /> : null}
           </section>
         }
       </div>
